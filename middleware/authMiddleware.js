@@ -24,28 +24,26 @@ const userControlAuth = async (req, res, next) => {
 
 // Admin kontrolünde JWT token doğrulaması da yapıldı
 const adminControlAuth = async (req, res, next) => {
-    let token;
+  const token = req.cookies.jwt;
 
-    token = req.cookies.jwt;
+  if (!token) {
+      return res.status(401).json({ message: 'Yetkilendirme hatası: Token bulunamadı' });
+  }
 
-    if (token) {
-        try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = decoded;
 
-            req.user = await User.findById(decoded.userId).select('-password');
+      if (req.user.userType !== 'admin') {
+          return res.status(403).json({ message: 'Yetki hatası: Admin değilsiniz' });
+      }
 
-            if (req.user && req.user.userType === 'admin') {
-                next();
-            } else {
-                res.status(403).json({ message: 'Forbidden - admin deyilsen' });
-            }
-        } catch (error) {
-            console.error(error);
-            res.status(401).json({ message: 'Unauthorized - invalid token' });
-        }
-    } else {
-        res.status(401).json({ message: 'Unauthorized - token not found' });
-    }
+      next();
+  } catch (error) {
+      console.error("Token doğrulama hatası:", error);
+      return res.status(401).json({ message: 'Yetkilendirme hatası: Geçersiz token' });
+  }
 };
+
 
 export { userControlAuth, adminControlAuth };
