@@ -6,10 +6,12 @@ const generateToken = (res, userId , userType) => {
     });
 
     res.cookie('jwt', token, {
-        secure: process.env.NODE_ENV !== 'development', 
-        sameSite: process.env.NODE_ENV !== 'development' ? 'None' : 'Strict', 
-        maxAge: 30 * 24 * 60 * 60 * 1000 // 30 gün
-    });
+      httpOnly: true,
+      secure: true, // Vercel’de HTTPS kullanıyorsanız true olmalı
+      sameSite: 'None', // Cross-origin istekler için None olmalı
+      maxAge: 30 * 24 * 60 * 60 * 1000 // 30 gün
+  });
+  
 };
 
 export default generateToken;
