@@ -23,7 +23,7 @@ const userControlAuth = async (req, res, next) => {
 };
 
 // Admin kontrolünde JWT token doğrulaması da yapıldı
-import jwt from 'jsonwebtoken';
+
 
 const adminControlAuth = (req, res, next) => {
   const token = req.cookies.jwt; // JWT'nin cookie'den alındığından emin olun
