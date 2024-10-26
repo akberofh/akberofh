@@ -9,15 +9,19 @@ const todoSchema = mongoose.Schema(
     },
     price: {
       type: String,
-      required: true,
+     
     },
+    body: {
+      type: String,
+    },
+
     description: {
       type: String,
-      required: true,
+    
     },
     photo: {
       type: String, // base64 encoded ucun string qebul edir
-      required: true,
+      
       default: '',
   },
     user_id: {
