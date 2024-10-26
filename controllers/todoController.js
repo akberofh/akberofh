@@ -5,11 +5,7 @@ import Todo from "../models/todoModel.js";
 const addUserTodo = async (req, res) => {
   try {
     const { title, description, price } = req.body;
-    let photo = '';
 
-    if (req.file) {
-      photo = req.file.buffer.toString('base64');
-    }
 
     // Assuming `user` is fetched or defined elsewhere in your middleware
     if (req.user) {
@@ -17,7 +13,6 @@ const addUserTodo = async (req, res) => {
         title,
         description,
         price,
-        photo,
         user_id: req.user._id,
       });
 
